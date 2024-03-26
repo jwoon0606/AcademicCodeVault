@@ -28,7 +28,7 @@ typedef struct _Student{
     char snum[10]; // 학번
     char name[20]; // 이름
     char phone[15]; // 연락처
-    int input; // 충전 횟수
+    int charge; // 충전 횟수
     int expend; // 사용 횟수
     int balance; // 잔액
 }Student;
@@ -68,12 +68,21 @@ int loadData(Student *s[], int cnt){
         printf("Failed to open file %s on line %d of file %s","Student.txt",__LINE__,__FILE__);
         exit(-1);
     }
+    int i=0;
     while(1){
         if(fp == EOF) break;
-
-
+        s[i] = (Student*)malloc(sizeof(Student*));
+        fscanf(fp,"%s",s[i]->snum);
+        fscanf(fp,"%s",s[i]->name);
+        fscanf(fp,"%s",s[i]->phone);
+        fscanf(fp,"%d",s[i]->charge);
+        fscanf(fp,"%d",s[i]->expend);
+        fscanf(fp,"%d",s[i]->balance);
+        i++;
     }
-
+    fclose(fp);
+    
+    return i;
 }
 
 int selectMenu(){
@@ -102,7 +111,7 @@ int addStudent(Student *s[],int cnt){
 
 void raedData(Student *s[]){
     int i=0;
-    while(strlen(s[i].snum)){      // why s[i]->snum (x), s[i].snum (o)?
+    while(strlen(s[i]->snum)){
         printf("학번       이름       연락처         충전 횟수 사용 횟수 현재 잔액\n");
         printf("%-8s %-8s %-11s %-5d %-5d %-5d\n",s[i]->snum,s[i]->name,s[i]->phone,s[i]->input,s[i]->expend,s[i]->balance);
     }
