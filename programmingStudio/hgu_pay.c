@@ -34,14 +34,15 @@ typedef struct _Student{
 }Student;
 
 int selectMenu();
-int loadData(Student *s[], int cnt); // Load data from file
-int addStudent(Student *s[],int cnt); // Create
+int loadData(Student *s[]); // Load data from file
 void readStudent(Student *s[],int cnt); // Read
-int deleteData(Student *s[], int cnt); // Delete
-void saveData(Student *s[]); // Save data
-int chargeMoney(Student *s[]); // Charge money(Update)
-int useMoney(Student *s[]); // Expend money(Update)
-void searchStudent(Student *s[]); // Search student
+int addStudent(Student *s[],int cnt); // Create
+void updateStudent(Student *s[], int cnt); // Update
+int deleteStudent(Student *s[], int cnt); // Delete
+void searchStudent(Student *s[], int cnt); // Search student
+void chargeMoney(Student *s[], int cnt); // Charge money
+void useMoney(Student *s[],int cnt); // Expend money
+void saveData(Student *s[],int cnt); // Save data
 
 int main(){
     Student* s[50] = {NULL,};
@@ -53,15 +54,24 @@ int main(){
         if(menu == 1){
             readData(s,count);
         }else if(menu == 2){
-            uaddStudent(s,count);
+            addStudent(s,count);
         }else if(menu == 3){
-
-        }
-
+            updateStudent(s,count);
+        }else if(menu == 4){
+            deleteStudent(s,count);
+        }else if(menu == 5){
+            searchStudent(s,count);
+        }else if(menu == 6){
+            chargeMoney(s,count);
+        }else if(menu == 7){
+            useMoney(s,count);
+        }else if(menu == 8){
+            saveDate(s,count);
+        }else break;
     }
 }
 
-int loadData(Student *s[], int cnt){
+int loadData(Student *s[]){
     FILE* fp = NULL;
     fp = fopen("student.txt","r");
     if(fp == NULL){
@@ -81,7 +91,7 @@ int loadData(Student *s[], int cnt){
         i++;
     }
     fclose(fp);
-    
+
     return i;
 }
 
@@ -91,11 +101,10 @@ int selectMenu(){
     printf("2. 학생 추가\n");
     printf("3. 학생 정보 수정\n");
     printf("4. 학생 삭제\n");
-    printf("5. 저장\n");
-    printf("6. 불러오기\n");
-    printf("7. 충전\n");
-    printf("8. 사용\n");
-    printf("9. 검색\n");
+    printf("5. 검색\n");
+    printf("6. 충전\n");
+    printf("7. 사용\n");
+    printf("8. 저장\n");
     printf("0. 종료\n");
     printf("메뉴 입력 => \n");
 
@@ -104,7 +113,7 @@ int selectMenu(){
 }
 int addStudent(Student *s[],int cnt){
     printf("학번은? ");
-    scanf("%s",s[cnt].snum);
+    scanf("%s",s[cnt]->snum);
 
     return cnt + 1;
 }
@@ -113,18 +122,18 @@ void raedData(Student *s[]){
     int i=0;
     while(strlen(s[i]->snum)){
         printf("학번       이름       연락처         충전 횟수 사용 횟수 현재 잔액\n");
-        printf("%-8s %-8s %-11s %-5d %-5d %-5d\n",s[i]->snum,s[i]->name,s[i]->phone,s[i]->input,s[i]->expend,s[i]->balance);
+        printf("%-8s %-8s %-11s %-5d %-5d %-5d\n",s[i]->snum,s[i]->name,s[i]->phone,s[i]->charge,s[i]->expend,s[i]->balance);
     }
 }
 
-int chargeMoney(Student *s[]){
+void chargeMoney(Student *s[], int cnt){
 
     return 1;
 }
-int useMoney(Student *s[]){
+void useMoney(Student *s[], int cnt){
 
 }
 
-void saveDate(Student *s[]){
+void saveDate(Student *s[], int cnt){
 
 }
