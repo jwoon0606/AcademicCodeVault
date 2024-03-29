@@ -40,17 +40,6 @@ typedef struct _Student{
     int balance; // 잔액
 }Student;
 
-// 입금
-typedef struct _input{
-    int no;
-    int amount;
-}Input;
-// 출금
-typedef struct _expend{
-    int no;
-    int amount;
-}Expend;
-
 int selectMenu(); // select menu
 int findStudentIndex(Student *s[],int cnt); // find student index
 void printOneStudent(Student *s[], int index); // print one student
@@ -66,7 +55,6 @@ void saveData(Student *s[],int cnt); // Save data
 
 int main(){
     Student* student[MAX_LEN] = {NULL,};
-    Input* input[MAX_LEN] = {NULL,};
 
     int menu,count = 0;
     
@@ -100,39 +88,12 @@ void printOneStudent(Student *s[], int index){
 }
 
 int findStudentIndex(Student *s[],int cnt){
-    int mode = 0;
-    printf("Choose finding mode(1: name, 2: index number) => ");
-    scanf("%d",&mode);
-
     int index = 0;
-
-    while(1){
-        if(mode == 1){
-            int count = 0;
-            printf("The name of the student you are looking for? ");
-            char i_string[STR_LEN] = "";
-            scanf("%s",i_string);
-            for(int i=0; i<cnt; i++){
-                if(strstr(s[i]->name,i_string)){
-                    count++;
-                    if(count == 1) printf("번호  학번       이름       연락처         충전 횟수 사용 횟수 현재 잔액\n");
-                    printOneStudent(s,i);
-                }
-            }
-            printf("Founded %d students\n",count);
-            printf("Index number of the student you are looking for? ");
-            scanf("%d",&index);
-            return index-1;
-        }
-        else if(mode == 2){
-            readStudent(s,cnt);
-            printf("\n");
-            printf("Index number of the student you are looking for? ");
-            scanf("%d",&index);
-            return index-1;
-        }
-        else printf("Wrong number!\n");
-    }
+    readStudent(s,cnt);
+    printf("\n");
+    printf("Index number of the student you are looking for? ");
+    scanf("%d",&index);
+    return index-1;
 }
 
 int loadData(Student *s[]){
@@ -222,6 +183,7 @@ int deleteStudent(Student *s[], int cnt){
             s[i] = s[i+1];
         }
         free(s[cnt]);
+        s[cnt] = NULL;
         printf("This Student is deleted.\n");
         return cnt-1;
     }
@@ -232,16 +194,102 @@ int deleteStudent(Student *s[], int cnt){
 }
 
 void searchStudent(Student *s[], int cnt){
+    int mode = 0;
+    printf("Choose finding mode(1: name, 2: year of enrollment) => ");
+    scanf("%d",&mode);
 
+    int index = 0;
+    int count = 0;
+
+    while(1){
+        if(mode == 1){
+
+            printf("The name of the student you are looking for? ");
+            char i_string[STR_LEN] = "";
+            scanf("%s",i_string);
+            for(int i=0; i<cnt; i++){
+                if(strstr(s[i]->name,i_string)){
+                    count++;
+                    if(count == 1) printf("번호  학번       이름       연락처         충전 횟수 사용 횟수 현재 잔액\n");
+                    printOneStudent(s,i);
+                }
+            }
+            printf("Found %d students\n",count);
+            break;
+        }
+        else if(mode == 2){
+            int year = 0;
+            printf("Year of enrollment? ");
+            scanf("%d",&year);
+            for(int i=0; i<cnt; i++){
+                int e_year = atoi(s[i]->snum) / 100000 % 100;
+                if(e_year == year){
+                    count++;
+                    if (count == 1) printf("번호  학번       이름       연락처         충전 횟수 사용 횟수 현재 잔액\n");
+                    printOneStudent(s,i);
+                }
+            }
+            printf("Found %d students\n",count);
+            break;
+        }
+        else printf("Wrong number!\n");
+    }
 }
 
 void chargeMoney(Student *s[], int cnt){
-
+    int index = findStudentIndex(s,cnt);
+    printf("How many charge time?(one time : 10000 Woon)\n");
+    int charge = 0;
+    scanf("%d",&charge);
+    s[index]->charge = charge;
+    
+    s[index]->balance += 10000 * charge;
 }
 void useMoney(Student *s[], int cnt){
-
+    int index = findStudentIndex(s,cnt);
+    printf("How many expend time?(one time : 10000 Woon)\n");
+    int expend = 0;
+    scanf("%d",&expend);
+    s[index]->expend = expend;
+    
+    s[index]->balance -= 10000 * expend;
 }
 
 void saveData(Student *s[], int cnt){
+    // student.txt에 변경사항 저장하기
+    FILE* fp = NULL;
+    fp = fopen(INPUT_FILE,"w");
+    if(fp == NULL){
+        printf("Failed to open the file %s on line %d of file %s",INPUT_FILE,__LINE__,__FILE__);
+        exit(-1);
+    }
 
+    for(int i=0; i<cnt; i++){
+        fprintf(fp,"%s %s %s %d %d %d\n",s[i]->snum,s[i]->name,s[i]->phone,s[i]->charge,s[i]->expend,s[i]->balance);
+    }
+
+    //파일 닫기
+    fclose(fp);
+
+    // report.txt에 보고서 출력하기
+    fp = fopen(OUPUT_FILE,"w");
+    if(fp == NULL){
+        printf("Failed to open the file %s on line %d of file %s",OUPUT_FILE,__LINE__,__FILE__);
+        exit(-1);
+    }
+
+    fprintf(fp,"\n번호  학번       이름       연락처         충전 횟수 사용 횟수 현재 잔액\n");
+    for(int i=0; i<cnt; i++){
+        fprintf(fp,"%3d  %-10s%-10s%-12s %-7d %-7d %-7d\n",i+1,s[i]->snum,s[i]->name,s[i]->phone,s[i]->charge,s[i]->expend,s[i]->balance);
+    }
+    
+    // 파일 닫기
+    fclose(fp);
+    
+    // 저장 되었음을 알리기
+    printf("저장됐다.\n");
 }
+
+/*
+다음에 만들 때는 금액을 좀 다양하게 해야할 듯
+*/
