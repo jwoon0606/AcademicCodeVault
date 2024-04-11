@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <iostream>
 #define max 25
 
 char name[max];
