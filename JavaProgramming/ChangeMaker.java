@@ -8,7 +8,7 @@ public class ChangeMaker
 
         System.out.println("Enter a whole number from 1 to 99.");
         System.out.println("I will find a combination of coins");
-        System.out.print("that eqauls that amount of change: ");
+        System.out.print("that equals that amount of change: ");
 
         Scanner sc = new Scanner(System.in);
         amount = sc.nextInt();
