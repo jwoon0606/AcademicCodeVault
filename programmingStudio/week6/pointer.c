@@ -1,17 +1,19 @@
 #include <stdio.h>
 
-void changePointer(int* ptr) {
+void changePointer(int *ptr)
+{
     int x = 10;
     ptr = &x; // 포인터를 다른 변수 x를 가리키도록 변경
 }
 
-int main() {
+int main()
+{
     int num = 5;
-    int* ptr = &num;
+    int *ptr = &num;
 
-    printf("Before function call %d\n",*ptr); // 출력: 5
+    printf("Before function call %d\n", *ptr); // 출력: 5
     changePointer(ptr);
-    printf("After function call %d\n",*ptr); // 여전히 num의 주소를 가리키므로 출력: 5
+    printf("After function call %d\n", *ptr); // 여전히 num의 주소를 가리키므로 출력: 5
 
     return 0;
 }
