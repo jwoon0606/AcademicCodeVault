@@ -1,13 +1,8 @@
-// pid
-pid_t pid = fork();
-if(pid > 0)
-    wait(0);
-else if(!pid)
-    execvp(argv[0],argv);
-else if([pid < 0)
-    perror("fork");
-
 // word
+fgets(cmd,SIZE,stdin);
+int len = strlen(cmd) - 1;
+cmd[len] = 0;
+
 for(int i=0; i<len; i++){
     for(;i<len && isspace(cmd[i]); i++);
     if(i >= len)
@@ -26,3 +21,79 @@ for(int i=0; i<len; i++){
 }
 argv[argc] = 0;
 
+// shell
+if(strcmp(cmd,"cd") == 0){
+    chdir(argv[1]);
+}
+else{
+    pid_t pid = fork();
+    if(pid > 0)
+        wait(0);
+    else if(!pid)
+        execvp(argv[0],argv);
+    else if(pid < 0)
+        perror("fork");
+}
+
+// shm
+int SIZE = 512;
+const char *shm_name = argv[1];
+int shm_fd = shm_open(shm_name, O_RDWR, 0666);
+// ftruncate(shm_fd,SIZE);                                  // svr version
+// int shm_fd = shm_open(shm_name, O_CREAT, O_RDWR, 0666);  // svr version
+char *shm = mmap(0,SIZE,PROT_WRITE,MAP_SHARED,shm_fd,0);
+
+// clt
+char cmd[SIZE];
+while(1){
+    fgets(cmd,"%s",stdin);
+    int len = strlen(cmd) - 1;
+    cmd[len] = 0;
+    if(cmd[0] != 0){
+        while(shm[0] != 0)
+            usleep(1000);
+    if(strcmp(cmd,"exit")==0) break;
+    sprintf(shm,"%s",cmd);
+    if(strcmp(cmd."exit_svr)==0) break;
+    }
+}
+
+// svr
+shm[0] = 0;
+while(1){
+    while(shm[0] == 0)
+        usleep(10000);
+    strcpy(cmd,shm);
+    shm[0] = 0;
+    runCmd(cmd);
+}
+
+// Thread
+typedef struct{
+    int idx;
+    int no_thread;
+}ThreadParam;
+
+int no_thread = atoi(argv[1]);
+
+pthread_t tid[no_thread];
+ThreadParam param[no_thread];
+
+int t = 0;
+for(t=0; t<no_thread; t++){
+    param[t].idx = t;
+    param[t].no_thread = no_thread;
+    pthread_create(&tid[i],NULL,ThreadFn,&param[t]);
+}
+
+for(t = 0; t<no_thread; t++){
+    pthread_join(tid[t],NULL);
+}
+
+void *ThreadFn(void *vparam){
+    ThreadParam *param = (ThreadParam*)vparaml;
+
+    // function
+
+    return NULL;
+}
