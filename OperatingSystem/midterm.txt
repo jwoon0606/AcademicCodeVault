@@ -49,12 +49,12 @@ while(1){
     fgets(cmd,"%s",stdin);
     int len = strlen(cmd) - 1;
     cmd[len] = 0;
-    if(cmd[0] != 0){
-        while(shm[0] != 0)
+    if(cmd[0] != NULL){     // cmd is not empty
+        while(shm[0] != 0)  // server is not on
             usleep(1000);
-    if(strcmp(cmd,"exit")==0) break;
-    sprintf(shm,"%s",cmd);
-    if(strcmp(cmd."exit_svr)==0) break;
+        if(strcmp(cmd,"exit")==0) break;
+        sprintf(shm,"%s",cmd);
+        if(strcmp(cmd."exit_svr)==0) break;
     }
 }
 
@@ -67,6 +67,7 @@ while(1){
     shm[0] = 0;
     runCmd(cmd);
 }
+shm_unlink(shm_name);
 
 // Thread
 typedef struct{
@@ -83,7 +84,7 @@ int t = 0;
 for(t=0; t<no_thread; t++){
     param[t].idx = t;
     param[t].no_thread = no_thread;
-    pthread_create(&tid[i],NULL,ThreadFn,&param[t]);
+    pthread_create(&tid[t],NULL,ThreadFn,&param[t]);
 }
 
 for(t = 0; t<no_thread; t++){
@@ -91,7 +92,7 @@ for(t = 0; t<no_thread; t++){
 }
 
 void *ThreadFn(void *vparam){
-    ThreadParam *param = (ThreadParam*)vparaml;
+    ThreadParam *param = (ThreadParam*)vparam;
 
     // function
 
