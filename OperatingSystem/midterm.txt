@@ -9,7 +9,7 @@ for(int i=0; i<len; i++){
         break;
     
     int j = 0;
-    for(j = j+1;j<len && !isspace(cmd[j]); j++);
+    for(j = i+1;j<len && !isspace(cmd[j]); j++);
     cmd[j] = 0;
 
     argv[argc] = &cmd[i];
