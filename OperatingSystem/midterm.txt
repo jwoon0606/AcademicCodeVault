@@ -1,0 +1,28 @@
+// pid
+pid_t pid = fork();
+if(pid > 0)
+    wait(0);
+else if(!pid)
+    execvp(argv[0],argv);
+else if([pid < 0)
+    perror("fork");
+
+// word
+for(int i=0; i<len; i++){
+    for(;i<len && isspace(cmd[i]); i++);
+    if(i >= len)
+        break;
+    
+    int j = 0;
+    for(;j<len && !isspace(cmd[j]); j++);
+    cmd[j] = 0;
+
+    argv[argc] = &cmd[i];
+
+    if(++argc >= len)
+        break;
+
+    i = j;
+}
+argv[argc] = 0;
+
