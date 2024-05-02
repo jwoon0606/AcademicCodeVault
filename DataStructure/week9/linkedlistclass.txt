@@ -1,0 +1,8 @@
+void Insert(int data, list_node **){
+    list_node *new_node = new list_node;
+    new_node->data = data;
+    new_node->link = *head;
+    *head = new_node;
+}
+
+In main, "Insert(i,&head1);"
