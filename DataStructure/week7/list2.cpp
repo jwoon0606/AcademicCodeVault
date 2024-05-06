@@ -1,13 +1,15 @@
 #include <iostream>
 using namespace std;
 
-typedef struct t_list_node {
+typedef struct t_list_node
+{
     string data;
     struct t_list_node *link;
 } list_node;
 
-int main(){
-    list_node *head =new list_node;
+int main()
+{
+    list_node *head = new list_node;
     head->data = "cat";
 
     head->link = new list_node;
@@ -20,6 +22,6 @@ int main(){
     node->link = head->link;
     head->link = node;
 
-    cout << "head->link->data: " <<head->link->data << endl;   // "vat"
+    cout << "head->link->data: " << head->link->data << endl;             // "vat"
     cout << "head->link->link->data: " << head->link->link->data << endl; // "bat"
 }
