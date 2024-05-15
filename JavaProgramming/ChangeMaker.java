@@ -1,10 +1,8 @@
 import java.util.Scanner;
 
-public class ChangeMaker
-{
-    public static void main(String[] args)
-    {
-        int amount, originalAmount,quarters, dimes, nickels, pennies;
+public class ChangeMaker {
+    public static void main(String[] args) {
+        int amount, originalAmount, quarters, dimes, nickels, pennies;
 
         System.out.println("Enter a whole number from 1 to 99.");
         System.out.println("I will find a combination of coins");
@@ -22,7 +20,7 @@ public class ChangeMaker
         amount = amount % 5;
         pennies = amount;
         System.out.println(originalAmount +
-                            " cents in coins can be given as:");
+                " cents in coins can be given as:");
         System.out.println(quarters + " quarters");
         System.out.println(dimes + " dimes");
         System.out.println(nickels + " nickels and");
